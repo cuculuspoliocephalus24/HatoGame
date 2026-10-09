@@ -164,7 +164,7 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
 		}
 		autoMoving = false;
 
-		if(autoMode && foodExist) {
+		if (autoMode && foodExist) {
 			if (x < foodX - 20) {
 
 				x += 2;
@@ -241,10 +241,10 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
 		}
 
 		// ランダムエサ生成
-		if(!feedMode && !foodExist) {
+		if (!feedMode && !foodExist) {
 
-		    spawnFood();
-		
+			spawnFood();
+
 		}
 		updateNpcPigeons();
 
@@ -254,11 +254,9 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
 		if (spawnTimer > 1800) {
 
 			npcPigeons.add(
-				    new NpcPigeon(
-				        (int)(Math.random() * 900),
-				        (int)(Math.random() * 500)
-				    )
-				);
+					new NpcPigeon(
+							(int) (Math.random() * 900),
+							(int) (Math.random() * 500)));
 
 			spawnTimer = 0;
 
@@ -269,41 +267,40 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
 		}
 
 	}
+
 	private void checkNpcFoodCollision() {
 
-	    for(NpcPigeon p : npcPigeons) {
+		for (NpcPigeon p : npcPigeons) {
 
-	        Rectangle pigeon =
-	                new Rectangle(
-	                        p.x,
-	                        p.y,
-	                        150,
-	                        150);
+			Rectangle pigeon = new Rectangle(
+					p.x,
+					p.y,
+					150,
+					150);
 
-	        Rectangle food =
-	                new Rectangle(
-	                        foodX - 20,
-	                        foodY - 50,
-	                        180,
-	                        120);
+			Rectangle food = new Rectangle(
+					foodX - 20,
+					foodY - 50,
+					180,
+					120);
 
-	        if(foodExist &&
-	           pigeon.intersects(food)) {
+			if (foodExist &&
+					pigeon.intersects(food)) {
 
-	            foodExist = false;
+				foodExist = false;
 
-	            npcPigeons.add(
-	                    new NpcPigeon(
-	                            p.x + 30,
-	                            p.y + 30));
+				npcPigeons.add(
+						new NpcPigeon(
+								p.x + 30,
+								p.y + 30));
 
-	            if(!feedMode) {
-	                spawnFood();
-	            }
+				if (!feedMode) {
+					spawnFood();
+				}
 
-	            return;
-	        }
-	    }
+				return;
+			}
+		}
 	}
 
 	@Override
@@ -397,14 +394,14 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
 			down = true;
 		}
 		if (gameState == 2 &&
-			    feedMode &&
-			    e.getKeyCode() == KeyEvent.VK_SPACE &&
-			    !foodExist) {
+				feedMode &&
+				e.getKeyCode() == KeyEvent.VK_SPACE &&
+				!foodExist) {
 
-			    spawnFood();
+			spawnFood();
 
-			    System.out.println("エサ設置");
-			}
+			System.out.println("エサ設置");
+		}
 	}
 
 	@Override
@@ -561,21 +558,21 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
 
 	private void drawGame(Graphics g) {
 
-	    drawBackground(g);
+		drawBackground(g);
 
-	    checkFoodCollision();
+		checkFoodCollision();
 
-	    checkNpcFoodCollision();
+		checkNpcFoodCollision();
 
-	    BufferedImage img = getPigeonImage();
+		BufferedImage img = getPigeonImage();
 
-	    drawPigeon(g, img);
+		drawPigeon(g, img);
 
-	    drawNpcPigeons(g);
+		drawNpcPigeons(g);
 
-	    drawFood(g);
+		drawFood(g);
 
-	    drawScore(g);
+		drawScore(g);
 	}
 
 	private void drawBackground(Graphics g) {
@@ -619,53 +616,47 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
 
 	private void drawNpcPigeons(Graphics g) {
 
-	    for(NpcPigeon p : npcPigeons) {
+		for (NpcPigeon p : npcPigeons) {
 
-	        BufferedImage img;
+			BufferedImage img;
 
-	        int anim = (p.frame / 10) % 4;
+			int anim = (p.frame / 10) % 4;
 
-	        if(p.faceRight) {
+			if (p.faceRight) {
 
-	            if(anim == 0) {
-	                img = standRight;
-	            }
-	            else if(anim == 1) {
-	                img = walkRight1;
-	            }
-	            else if(anim == 2) {
-	                img = walkRight2;
-	            }
-	            else {
-	                img = walkRight1;
-	            }
+				if (anim == 0) {
+					img = standRight;
+				} else if (anim == 1) {
+					img = walkRight1;
+				} else if (anim == 2) {
+					img = walkRight2;
+				} else {
+					img = walkRight1;
+				}
 
-	        } else {
+			} else {
 
-	            if(anim == 0) {
-	                img = standLeft;
-	            }
-	            else if(anim == 1) {
-	                img = walkLeft1;
-	            }
-	            else if(anim == 2) {
-	                img = walkLeft2;
-	            }
-	            else {
-	                img = walkLeft1;
-	            }
-	        }
+				if (anim == 0) {
+					img = standLeft;
+				} else if (anim == 1) {
+					img = walkLeft1;
+				} else if (anim == 2) {
+					img = walkLeft2;
+				} else {
+					img = walkLeft1;
+				}
+			}
 
-	        g.drawImage(
-	                img,
-	                p.x,
-	                p.y,
-	                150,
-	                150,
-	                null);
-	    }
+			g.drawImage(
+					img,
+					p.x,
+					p.y,
+					150,
+					150,
+					null);
+		}
 	}
-	
+
 	private void drawScore(Graphics g) {
 
 		g.setFont(
@@ -684,68 +675,68 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
 				20,
 				60);
 	}
+
 	private void updateNpcPigeons() {
 
-	    for(NpcPigeon p : npcPigeons) {
+		for (NpcPigeon p : npcPigeons) {
 
-	        if(foodExist) {
+			if (foodExist) {
 
-	            moveToFood(p);
+				moveToFood(p);
 
-	        } else {
+			} else {
 
-	            wander(p);
-	        }
-	    }
+				wander(p);
+			}
+		}
 	}
+
 	private void wander(NpcPigeon p) {
 
-	    if(Math.abs(p.x - p.targetX) < 20 &&
-	       Math.abs(p.y - p.targetY) < 20) {
+		if (Math.abs(p.x - p.targetX) < 20 &&
+				Math.abs(p.y - p.targetY) < 20) {
 
-	        p.targetX =
-	                (int)(Math.random() * getWidth());
+			p.targetX = (int) (Math.random() * getWidth());
 
-	        p.targetY =
-	                (int)(Math.random() * getHeight());
-	    }
+			p.targetY = (int) (Math.random() * getHeight());
+		}
 
-	    moveTowards(
-	            p,
-	            p.targetX,
-	            p.targetY);
+		moveTowards(
+				p,
+				p.targetX,
+				p.targetY);
 	}
+
 	private void moveToFood(NpcPigeon p) {
 
-	    moveTowards(
-	            p,
-	            foodX,
-	            foodY);
+		moveTowards(
+				p,
+				foodX,
+				foodY);
 	}
+
 	private void moveTowards(
-	        NpcPigeon p,
-	        int targetX,
-	        int targetY) {
+			NpcPigeon p,
+			int targetX,
+			int targetY) {
 
-	    double dx = targetX - p.x;
-	    double dy = targetY - p.y;
+		double dx = targetX - p.x;
+		double dy = targetY - p.y;
 
-	    double distance =
-	            Math.sqrt(dx * dx + dy * dy);
+		double distance = Math.sqrt(dx * dx + dy * dy);
 
-	    if(distance > 3) {
+		if (distance > 3) {
 
-	        p.x += (int)(dx / distance * p.speed);
+			p.x += (int) (dx / distance * p.speed);
 
-	        p.y += (int)(dy / distance * p.speed);
+			p.y += (int) (dy / distance * p.speed);
 
-	        p.faceRight = dx > 0;
+			p.faceRight = dx > 0;
 
-	        p.frame++;
-	    }
+			p.frame++;
+		}
 	}
-	
-	
+
 	private void checkFoodCollision() {
 
 		Rectangle pigeon = new Rectangle(
@@ -853,20 +844,19 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
 
 		return walkLeft1;
 	} // ← getPigeonImage終了
-	
+
 	private void spawnFood() {
 
-	    int width = Math.max(getWidth(), 1200);
-	    int height = Math.max(getHeight(), 800);
+		int width = Math.max(getWidth(), 1200);
+		int height = Math.max(getHeight(), 800);
 
-	    foodX = (int)(Math.random() * (width - 200) + 100);
-	    foodY = (int)(Math.random() * (height - 200) + 100);
+		foodX = (int) (Math.random() * (width - 200) + 100);
+		foodY = (int) (Math.random() * (height - 200) + 100);
 
-	    foodExist = true;
+		foodExist = true;
 	}
 
 	private void drawFood(Graphics g) {
-		
 
 		g.setColor(Color.BLACK);
 
@@ -895,5 +885,5 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
 				foodX,
 				foodY + 60);
 	}
-            
+
 }
