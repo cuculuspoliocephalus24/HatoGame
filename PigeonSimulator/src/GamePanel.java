@@ -345,7 +345,7 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
 			}
 
 			if (e.getKeyCode() == KeyEvent.VK_2) {
-
+				playSound("sound/title2.wav");
 				gameState = 1; // 後で設定画面にする
 				repaint();
 			}
