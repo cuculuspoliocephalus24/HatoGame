@@ -13,6 +13,9 @@ import java.io.File;
 import java.util.ArrayList;
 
 import javax.imageio.ImageIO;
+import javax.sound.sampled.AudioInputStream;
+import javax.sound.sampled.AudioSystem;
+import javax.sound.sampled.Clip;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.Timer;
@@ -43,6 +46,11 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
 	boolean autoMode = false;
 	boolean autoMoving = false;
 	boolean feedMode = false;
+	
+	boolean reached100 = false;
+	boolean reached1000 = false;
+
+	
 
 	int foodX = 600;
 	int foodY = 300;
@@ -50,6 +58,7 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
 	int frame = 0;
 	int foodCount = 0;
 	int spawnTimer = 0;
+	int pigeonCount = npcPigeons.size() + 1;
 	String foodName = "パン";
 
 	private BufferedImage[] eatRightFrames;
@@ -257,13 +266,32 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
 					new NpcPigeon(
 							(int) (Math.random() * 900),
 							(int) (Math.random() * 500)));
-
+			playSound("sound/pigeon2.wav");
 			spawnTimer = 0;
 
 			System.out.println(
 					"ハト増殖！ 現在 "
 							+ (npcPigeons.size() + 1)
 							+ " 羽");
+		}
+		int pigeonCount = npcPigeons.size() + 1;
+
+		if (!reached100 && pigeonCount >= 100) {
+
+		    playSound("sound/born100.wav");
+
+		    reached100 = true;
+
+		    System.out.println("100羽達成！");
+		}
+
+		if (!reached1000 && pigeonCount >= 1000) {
+
+		    playSound("sound/cuckoo.wav");
+
+		    reached1000 = true;
+
+		    System.out.println("1000羽達成！！！");
 		}
 
 	}
@@ -286,7 +314,7 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
 
 			if (foodExist &&
 					pigeon.intersects(food)) {
-
+				playSound("sound/pigeon.wav");
 				foodExist = false;
 
 				npcPigeons.add(
@@ -294,6 +322,7 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
 								p.x + 30,
 								p.y + 30));
 
+				playSound("sound/pigeon2.wav");
 				if (!feedMode) {
 					spawnFood();
 				}
@@ -323,8 +352,10 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
 
 			if (e.getKeyCode() == KeyEvent.VK_3) {
 
-				gameState = 3; // フラれた
-				repaint();
+				playSound("sound/reject.wav");
+
+			    gameState = 3;
+			    repaint();
 			}
 
 			return;
@@ -754,6 +785,8 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
 		if (foodExist &&
 				pigeon.intersects(food)) {
 
+			playSound("sound/pigeon.wav");
+			
 			foodCount++;
 			// 首伸ばしアニメーション開始
 			eatingAnimation = true;
@@ -885,5 +918,23 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
 				foodX,
 				foodY + 60);
 	}
+	private void playSound(String fileName) {
 
+	    try {
+
+	        AudioInputStream audio =
+	                AudioSystem.getAudioInputStream(
+	                        new File(fileName));
+
+	        Clip clip = AudioSystem.getClip();
+
+	        clip.open(audio);
+
+	        clip.start();
+
+	    } catch (Exception e) {
+
+	        e.printStackTrace();
+	    }
+	}
 }
